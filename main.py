@@ -4,7 +4,7 @@ import keyboard
 import pyperclip
 import sys
 
-from bin.TextProcessor import DataManager
+from bin.DataManager import DataManager
 
 # * Data processing
 data = DataManager("input/")
