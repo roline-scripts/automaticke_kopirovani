@@ -5,8 +5,8 @@ import os
 # * Nezáleží tedy na tom, zda jsou všechna naskenovaná čísla umístěna v jednom souboru, nebo jsou rozdělena do více souborů.
 
 class DataManager():
-    def __init__(self): # enter file name as it is in the default input folder
-        self.DEFAULT_INPUT_DIR = "../input/" # ! Za název složky je vždy nutné přidat lomítko!
+    def __init__(self, input_dir: str): # enter file name as it is in the default input folder
+        self.DEFAULT_INPUT_DIR = input_dir # ! Za název složky je vždy nutné přidat lomítko!
 
         self.file_list = os.listdir(self.DEFAULT_INPUT_DIR)
         
@@ -30,15 +30,18 @@ class DataManager():
         self.delivery_id = self.matchPattern(self.DELIVERY_ID_PATTERN, input_data)
         self.amount = self.matchPattern(self.AMOUNT, input_data)
 
+        return 1
+
     def matchPattern(self, exp, data):
         found = re.findall(exp, data)
         return found
 
 def main():
+    os.chdir("..")
     test_path = "test1.txt"
-    file = DataManager()
-    print(file.serial_nums)
+    file = DataManager("input/")
     file.processFiles()
+    print(file.serial_nums)
     for i in file.serial_nums:
         print(i)
 

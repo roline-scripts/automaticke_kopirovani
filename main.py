@@ -1,13 +1,12 @@
 import re
 import time
 import keyboard
+import pyperclip
 import sys
 
 from bin.TextProcessor import DataManager
 
-class TextProcessor():
-    def __init__(self, target_file):
-        self.target_file = target_file
+# * Data processing
+data = DataManager("input/")
+data.processFiles()
 
-    def handleFile(self):
-        pass 

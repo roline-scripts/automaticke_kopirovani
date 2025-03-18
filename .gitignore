@@ -1,2 +1,4 @@
 # Ignore notes.txt
 notes.txt
+
+__pycache__/
