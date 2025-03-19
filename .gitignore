@@ -2,3 +2,10 @@
 notes.txt
 
 __pycache__/
+
+# Ignore pyinstaller build folder
+build/
+dist/
+*.spec
+
+pyinstaller*
