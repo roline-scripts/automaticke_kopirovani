@@ -17,7 +17,7 @@ class DataManager():
 
         # Processed data
         self.serial_nums = []
-        self.delivery_id = []
+        self.pallette_nums = []
         self.amount = []
 
     def processFiles(self): 
@@ -27,7 +27,7 @@ class DataManager():
                 input_data += f.read()
 
         self.serial_nums = self.matchPattern(self.SN_PATTERN, input_data)
-        self.delivery_id = self.matchPattern(self.DELIVERY_ID_PATTERN, input_data)
+        self.pallette_nums = self.matchPattern(self.DELIVERY_ID_PATTERN, input_data)
         self.amount = self.matchPattern(self.AMOUNT, input_data)
 
         return 1
@@ -35,6 +35,9 @@ class DataManager():
     def matchPattern(self, exp, data):
         found = re.findall(exp, data)
         return found
+    
+    def getAmountSum(self):
+        return  sum(list(map(int, self.amount)))
 
 def main():
     os.chdir("..")
