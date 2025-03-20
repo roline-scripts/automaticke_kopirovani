@@ -7,7 +7,7 @@ import os
 import asyncio
 # from desktop_notifier import DesktopNotifier
 
-from bin.DataManager import DataManager
+from src.DataManager import DataManager
 
 # * Barevny text
 class bcolors:
@@ -22,15 +22,18 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 class status_tag:
-    FAIL = f"[{bcolors.FAIL} CHYBA {bcolors.ENDC}]"
-    OK = f"[{bcolors.OKGREEN} OK {bcolors.ENDC}]"
-    WARNING = f"[{bcolors.WARNING} POZOR {bcolors.ENDC}]"
-    INFO = f"[{bcolors.OKCYAN} INFO {bcolors.ENDC}]"
-    USERPROMPT = f"[{bcolors.WARNING} ? {bcolors.ENDC}]"
+    FAIL = f"[ CHYBA ]"
+    OK = f"[ OK ]"
+    WARNING = f"[ POZOR ]"
+    INFO = f"[ INFO ]"
+    USERPROMPT = f"[ ? ]"
 
 # * Upozorneni pred spustenim
-print(f"{bcolors.WARNING}DŮLEŽITÉ: Jakmile program začne vkládat SN do Logi, není možné počítač vzužívat k ničemu jinému. \nProgram pouze mačká tlačítka za vás, proto pokud začnete během jeho chodu mačkat další tlačítka, rozhodíte ho \na nebude tlačítka mačkat tak, jak by měl.{bcolors.ENDC}\n")
+print(f"DŮLEŽITÉ: Jakmile program začne vkládat SN do Logi, není možné počítač vzužívat k ničemu jinému. \nProgram pouze mačká tlačítka za vás, proto pokud začnete během jeho chodu mačkat další tlačítka, rozhodíte ho \na nebude tlačítka mačkat tak, jak by měl.\n")
 input("Po přečtení zprávy stiskněte jakékoliv tlačíko.")
+clear = lambda: os.system('cls')
+clear()
+time.sleep(0.2)
 
 # * Data processing
 print(f"{status_tag.INFO} Zpracovávám data...")
@@ -53,9 +56,9 @@ elif len(data.file_list) < 10:
 else:
     print(f"{status_tag.INFO} Nalezeno {len(data.file_list)} dokumentů. Pro kontrolu zpracovaná data.")
 
-print(f"""{bcolors.BOLD}\n\tDatum poslední úpravy složky input:{bcolors.ENDC} {time.ctime(os.path.getmtime("input"))}
-\t{bcolors.BOLD}Počet SN v dokumentech:{bcolors.ENDC} {data.getAmountSum()}
-\t{bcolors.BOLD}První tři sériová čísla:{bcolors.ENDC} {", ".join(data.serial_nums[:3])}
+print(f"""\n\tDatum poslední úpravy složky input: {time.ctime(os.path.getmtime("input"))}
+\tPočet SN v dokumentech: {data.getAmountSum()}
+\tPrvní tři sériová čísla: {", ".join(data.serial_nums[:3])}
 """)
 print(f"{status_tag.INFO} Zkontrolujte prosím správnost uvedených informací.")
 
@@ -82,8 +85,10 @@ countdown = 10
 print(f"{status_tag.INFO} Vkládání čísel začne za {countdown} vteřin.")
 
 def writeNums(nums: list):
+    current_item = 1 # 
+    total_len = len(nums)
     for num in data.serial_nums:
-        print(f"{status_tag.OK} Vloženo SN: {num}.")
+        print(f"{status_tag.OK} Vloženo SN ({current_item}/{total_len}): {num}")
         pyperclip.copy(f"{num}")
         keyboard.send("ctrl+v")
         time.sleep(1)
@@ -93,6 +98,7 @@ def writeNums(nums: list):
         time.sleep(0.1)
         keyboard.send("enter")
         time.sleep(0.1)
+        current_item += 1
     pyperclip.copy("HOTOVO")
     keyboard.send("ctrl+v")
 
@@ -100,4 +106,4 @@ time.sleep(countdown)
 
 writeNums(data.serial_nums)
 
-input(f"{status_tag.OK} Vkládání dokončeno. Stiskni jakoukolilv klávesu pro ukončení programu.")
+input(f"\n{status_tag.OK} Vkládání dokončeno. Stiskněte jakoukolilv klávesu pro ukončení programu.")
