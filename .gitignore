@@ -9,3 +9,5 @@ dist/
 *.spec
 
 pyinstaller*
+*.zip
+*.exe

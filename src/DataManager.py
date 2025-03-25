@@ -26,7 +26,8 @@ class DataManager():
             with open(self.DEFAULT_INPUT_DIR + file, "r") as f:
                 input_data += f.read()
 
-        self.serial_nums = self.matchPattern(self.SN_PATTERN, input_data)
+        # self.serial_nums = self.matchPattern(self.SN_PATTERN, input_data)
+        self.serial_nums = self.matchSerialNumbers(input_data)
         self.pallette_nums = self.matchPattern(self.DELIVERY_ID_PATTERN, input_data)
         self.amount = self.matchPattern(self.AMOUNT, input_data)
 
@@ -36,17 +37,23 @@ class DataManager():
         found = re.findall(exp, data)
         return found
     
+    def matchSerialNumbers(self, data):
+        return_data = []
+        for num in self.matchPattern(self.SN_PATTERN, data): 
+            split = num.split()
+            return_data.append(split[0] + "   " + split[1])
+        return return_data 
+            
+    
     def getAmountSum(self):
         return  sum(list(map(int, self.amount)))
 
 def main():
-    os.chdir("..")
-    test_path = "test1.txt"
+    # os.chdir("..")
     file = DataManager("input/")
     file.processFiles()
-    print(file.serial_nums)
-    for i in file.serial_nums:
-        print(i)
+    # for i in file.serial_nums:
+    #     print(i)
 
 if __name__ == "__main__":
     main()

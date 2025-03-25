@@ -10,7 +10,7 @@ import asyncio
 from src.DataManager import DataManager
 
 # * Barevny text
-class bcolors:
+class _bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -61,6 +61,7 @@ print(f"""\n\tDatum poslední úpravy složky input: {time.ctime(os.path.getmtim
 \tPrvní tři sériová čísla: {", ".join(data.serial_nums[:3])}
 """)
 print(f"{status_tag.INFO} Zkontrolujte prosím správnost uvedených informací.")
+print(f"{status_tag.WARNING} Nezapomeňte, že zatímco program vkládá čísla do Logi, není možné na počítači dělat nic jiného")
 
 while True:
     user_input = input(f"{status_tag.USERPROMPT} Chcete spustit program? (a/n) ")
@@ -82,19 +83,20 @@ while True:
 
 # * Timer before start
 countdown = 10
-print(f"{status_tag.INFO} Vkládání čísel začne za {countdown} vteřin.")
+print(f"{status_tag.INFO} Automatické vkládání čísel začne za {countdown} vteřin.")
 
 def writeNums(nums: list):
     current_item = 1 # 
     total_len = len(nums)
     for num in data.serial_nums:
         print(f"{status_tag.OK} Vloženo SN ({current_item}/{total_len}): {num}")
-        pyperclip.copy(f"{num}")
+        pyperclip.copy(num)
         keyboard.send("ctrl+v")
         time.sleep(1)
         keyboard.send("enter")
         time.sleep(0.1)
-        keyboard.send("2")
+        pyperclip.copy("2")
+        keyboard.send("ctrl+v")
         time.sleep(0.1)
         keyboard.send("enter")
         time.sleep(0.1)
