@@ -11,7 +11,7 @@ class DataManager():
         self.file_list = os.listdir(self.DEFAULT_INPUT_DIR)
         
         # REGEX PATTERNS 
-        self.SN_PATTERN = r"\d{17}\s\d{5}"   
+        self.SN_PATTERN = r"\d{17}\s{1,3}?\d{5}"   
         self.DELIVERY_ID_PATTERN = r"\d{18}"
         self.AMOUNT = r"(?<=;)\d{2}(?=;)"
 
@@ -42,7 +42,7 @@ class DataManager():
         for num in self.matchPattern(self.SN_PATTERN, data): 
             split = num.split()
             return_data.append(split[0] + "   " + split[1])
-        return return_data 
+        return return_data
             
     
     def getAmountSum(self):

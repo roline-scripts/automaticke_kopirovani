@@ -57,7 +57,7 @@ else:
     print(f"{status_tag.INFO} Nalezeno {len(data.file_list)} dokumentů. Pro kontrolu zpracovaná data.")
 
 print(f"""\n\tDatum poslední úpravy složky input: {time.ctime(os.path.getmtime("input"))}
-\tPočet SN v dokumentech: {data.getAmountSum()}
+\tPočet SN v dokumentech / Počet načtených SN: {data.getAmountSum()} / {len(data.serial_nums)}
 \tPrvní tři sériová čísla: {", ".join(data.serial_nums[:3])}
 """)
 print(f"{status_tag.INFO} Zkontrolujte prosím správnost uvedených informací.")
