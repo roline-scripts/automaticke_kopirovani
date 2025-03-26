@@ -89,17 +89,19 @@ def writeNums(nums: list):
     current_item = 1 # 
     total_len = len(nums)
     for num in data.serial_nums:
-        print(f"{status_tag.OK} Vloženo SN ({current_item}/{total_len}): {num}")
-        pyperclip.copy(num)
+        time.sleep(0.2)
+        keyboard.send("a")
+        keyboard.send("ctrl+a")
+        pyperclip.copy(f"{num}")
         keyboard.send("ctrl+v")
         time.sleep(1)
         keyboard.send("enter")
         time.sleep(0.1)
-        pyperclip.copy("2")
-        keyboard.send("ctrl+v")
+        keyboard.send("2")
         time.sleep(0.1)
         keyboard.send("enter")
         time.sleep(0.1)
+        print(f"{status_tag.OK} Vloženo SN ({current_item}/{total_len}): {num}")
         current_item += 1
     pyperclip.copy("HOTOVO")
     keyboard.send("ctrl+v")
