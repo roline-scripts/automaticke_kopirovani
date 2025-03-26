@@ -8,6 +8,5 @@ build/
 dist/
 *.spec
 
-pyinstaller*
 *.zip
 *.exe
