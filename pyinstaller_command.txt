@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --onefile --console -n automaticke_kopirovani --distpath . main.py
