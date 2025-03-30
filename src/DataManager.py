@@ -1,7 +1,10 @@
 import re
 import os
+import math
 
-# * Modul DataManager zpracovává všechna data obsažena ve složce input, která je umístěna ve hlavní složce skriptu. Obsažená data jsou vyhodnocována pomocí regexu.
+from Settings import *
+
+# * Modul DataManager zpracovává všechna data obsažena ve složce input, která je umístěna ve hlavní složce skriptu. Obsažená data jsou vyhodnocována pomocí regevalueu.
 # * Nezáleží tedy na tom, zda jsou všechna naskenovaná čísla umístěna v jednom souboru, nebo jsou rozdělena do více souborů.
 
 class DataManager():
@@ -33,8 +36,8 @@ class DataManager():
 
         return 1
 
-    def matchPattern(self, exp, data):
-        found = re.findall(exp, data)
+    def matchPattern(self, evaluep, data):
+        found = re.findall(evaluep, data)
         return found
     
     def matchSerialNumbers(self, data):
@@ -42,18 +45,24 @@ class DataManager():
         for num in self.matchPattern(self.SN_PATTERN, data): 
             split = num.split()
             return_data.append(split[0] + "   " + split[1])
-        return return_data
-            
+        return return_data 
+
+    def getSnCoords(value: int): # converts given value to the coordinate format of serial nums 
+
+        list_count = math.ceil(value/32)
+        column_count = math.ceil(32/12 if ((value%32)/12) == 0 else ((value%32)/12))
+        check_multiple = 32 if value%32 == 0 else value%32
+        row_count = 12 if check_multiple%12 == 0 else check_multiple%12
+
+        print(math.ceil(value/32),math.ceil(32/12 if ((value%32)/12) == 0 else ((value%32)/12)),(12 if (32 if value%32 == 0 else value%32)%12 == 0 else (32 if value%32 == 0 else value%32)%12))
     
     def getAmountSum(self):
         return  sum(list(map(int, self.amount)))
 
 def main():
-    # os.chdir("..")
     file = DataManager("input/")
     file.processFiles()
-    # for i in file.serial_nums:
-    #     print(i)
+    DataManager.getSnCoords(432)
 
 if __name__ == "__main__":
     main()
