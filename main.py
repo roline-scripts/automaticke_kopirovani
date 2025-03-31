@@ -1,3 +1,4 @@
+#!env/bin/python3.13
 import time
 import keyboard
 import pyperclip
@@ -8,18 +9,6 @@ import asyncio
 # from desktop_notifier import DesktopNotifier
 
 from src.DataManager import DataManager
-
-# * Barevny text
-class _bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 class status_tag:
     FAIL = f"[ CHYBA ]"
@@ -89,10 +78,9 @@ def writeNums(nums: list):
     current_item = 1 # 
     total_len = len(nums)
     for num in data.serial_nums:
-        time.sleep(0.2)
-        keyboard.send("a")
-        keyboard.send("ctrl+a")
-        pyperclip.copy(f"{num}")
+        pyperclip.copy(DataManager.getSnCoords(num))
+        keyboard.send("ctrl+v")
+        pyperclip.copy(num)
         keyboard.send("ctrl+v")
         time.sleep(1)
         keyboard.send("enter")

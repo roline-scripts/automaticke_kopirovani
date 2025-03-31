@@ -1,12 +1,10 @@
 altgraph==0.17.4
-auto-py-to-exe==2.46.0
 bidict==0.23.1
 bottle==0.13.2
 bottle-websocket==0.2.9
 certifi==2025.1.31
 cffi==1.17.1
 charset-normalizer==3.4.1
-desktop-notifier==6.0.0
 docopt==0.6.2
 Eel==0.18.1
 future==1.0.0
@@ -29,13 +27,6 @@ requests==2.32.3
 setuptools==76.1.0
 typing_extensions==4.12.2
 urllib3==2.3.0
-winrt-runtime==3.0.0
-winrt-Windows.ApplicationModel.Core==3.0.0
-winrt-Windows.Data.Xml.Dom==3.0.0
-winrt-Windows.Foundation==3.0.0
-winrt-Windows.Foundation.Collections==3.0.0
-winrt-Windows.Foundation.Interop==2.3.0
-winrt-Windows.UI.Notifications==3.0.0
 yarg==0.1.10
 zope.event==5.0
 zope.interface==7.2

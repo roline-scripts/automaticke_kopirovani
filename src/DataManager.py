@@ -2,7 +2,6 @@ import re
 import os
 import math
 
-from Settings import *
 
 # * Modul DataManager zpracovává všechna data obsažena ve složce input, která je umístěna ve hlavní složce skriptu. Obsažená data jsou vyhodnocována pomocí regevalueu.
 # * Nezáleží tedy na tom, zda jsou všechna naskenovaná čísla umístěna v jednom souboru, nebo jsou rozdělena do více souborů.
@@ -54,7 +53,7 @@ class DataManager():
         check_multiple = 32 if value%32 == 0 else value%32
         row_count = 12 if check_multiple%12 == 0 else check_multiple%12
 
-        print(math.ceil(value/32),math.ceil(32/12 if ((value%32)/12) == 0 else ((value%32)/12)),(12 if (32 if value%32 == 0 else value%32)%12 == 0 else (32 if value%32 == 0 else value%32)%12))
+        return str(list_count, column_count, check_multiple)
     
     def getAmountSum(self):
         return  sum(list(map(int, self.amount)))
