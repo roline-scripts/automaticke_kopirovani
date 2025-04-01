@@ -9,13 +9,7 @@ import asyncio
 # from desktop_notifier import DesktopNotifier
 
 from src.DataManager import DataManager
-
-class status_tag:
-    FAIL = f"[ CHYBA ]"
-    OK = f"[ OK ]"
-    WARNING = f"[ POZOR ]"
-    INFO = f"[ INFO ]"
-    USERPROMPT = f"[ ? ]"
+from src.utils import status_tag
 
 # * Upozorneni pred spustenim
 print(f"DŮLEŽITÉ: Jakmile program začne vkládat SN do Logi, není možné počítač vzužívat k ničemu jinému. \nProgram pouze mačká tlačítka za vás, proto pokud začnete během jeho chodu mačkat další tlačítka, rozhodíte ho \na nebude tlačítka mačkat tak, jak by měl.\n")
@@ -78,9 +72,11 @@ def writeNums(nums: list):
     current_item = 1 # 
     total_len = len(nums)
     for num in data.serial_nums:
-        pyperclip.copy(DataManager.getSnCoords(num))
+        pyperclip.copy(DataManager.getSnCoords(current_item))
         keyboard.send("ctrl+v")
+        time.sleep(0.5)
         pyperclip.copy(num)
+        keyboard.send("ctrl+a")
         keyboard.send("ctrl+v")
         time.sleep(1)
         keyboard.send("enter")

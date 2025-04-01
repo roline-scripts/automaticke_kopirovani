@@ -53,7 +53,7 @@ class DataManager():
         check_multiple = 32 if value%32 == 0 else value%32
         row_count = 12 if check_multiple%12 == 0 else check_multiple%12
 
-        return str(list_count, column_count, check_multiple)
+        return f"L{list_count} S{column_count} Ř{row_count}"
     
     def getAmountSum(self):
         return  sum(list(map(int, self.amount)))
@@ -61,7 +61,7 @@ class DataManager():
 def main():
     file = DataManager("input/")
     file.processFiles()
-    DataManager.getSnCoords(432)
+    print(DataManager.getSnCoords(1))
 
 if __name__ == "__main__":
     main()
