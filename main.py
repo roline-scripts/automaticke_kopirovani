@@ -9,6 +9,7 @@ import asyncio
 # from desktop_notifier import DesktopNotifier
 
 from src.DataManager import DataManager
+from src.Settings import SettingsManager, settings_dialog
 from src.utils import status_tag
 
 # * Upozorneni pred spustenim
@@ -24,9 +25,31 @@ try:
     data = DataManager("input/")
     data.processFiles()
 except:
-    print(f"{status_tag.FAIL} Při zpracovávání dat došlo k chybě. Ukončuji program...")
+    print(f"{status_tag.FAIL} Při zpracovávání dat došlo k chybě. Ukončuji program... ")
     time.sleep(5)
     sys.exit()
+
+print(f"{status_tag.INFO} Načítám nastavení...")
+try:
+    manager = SettingsManager("./src/settings.json")
+    print(f"{status_tag.INFO} Používám následující nastavení:")
+    manager.showActiveSettings()
+except:
+    print(f"{status_tag.FAIL} Při načítání nastavení došlo k chybě. Ukončuji program...")
+    time.sleep(5)
+    sys.exit()
+
+while True:
+    user_input = input(f"{status_tag.USERPROMPT} Přejete si změnit nastavení (a/n)? ").lower()
+    if user_input == "a":
+        settings_dialog(manager)
+        break
+    if user_input == "n" or user_input == "":
+        break
+    else:
+        print(f"{status_tag.FAIL} Neplatný vstup. Zkuste to znovu.")
+
+print(f"{status_tag.INFO} Pokračuji ke zpracování dokumentů...")
 
 if len(data.file_list) == 0:
     print(f"{status_tag.FAIL} Nebyly nalezeny žádné dokumenty ve složce input. Vložte do složky data a restartujte program.")
@@ -47,7 +70,7 @@ print(f"{status_tag.INFO} Zkontrolujte prosím správnost uvedených informací.
 print(f"{status_tag.WARNING} Nezapomeňte, že zatímco program vkládá čísla do Logi, není možné na počítači dělat nic jiného")
 
 while True:
-    user_input = input(f"{status_tag.USERPROMPT} Chcete spustit program? (a/n) ")
+    user_input = input(f"{status_tag.USERPROMPT} Chcete spustit program (a/n)? ")
     try:
         if user_input.lower() == "n" or user_input.lower() == "ne":
             print(f"{status_tag.INFO} Program ukončen uživatelem. Zavřete oči, odcházím!")
@@ -70,9 +93,11 @@ print(f"{status_tag.INFO} Automatické vkládání čísel začne za {countdown}
 
 def writeNums(nums: list):
     current_item = 1 # 
+    divider = int(manager.settings['unit_count'])
+    reference = manager.settings['reference_number'][0]
     total_len = len(nums)
     for num in data.serial_nums:
-        pyperclip.copy(DataManager.getSnCoords(current_item))
+        pyperclip.copy(DataManager.getSnCoords(current_item, divider))
         keyboard.send("ctrl+v")
         time.sleep(0.5)
         pyperclip.copy(num)
@@ -81,7 +106,7 @@ def writeNums(nums: list):
         time.sleep(1)
         keyboard.send("enter")
         time.sleep(0.1)
-        keyboard.send("2")
+        keyboard.send(f"{reference}")
         time.sleep(0.1)
         keyboard.send("enter")
         time.sleep(0.1)

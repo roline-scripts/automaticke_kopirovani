@@ -2,7 +2,6 @@ import re
 import os
 import math
 
-
 # * Modul DataManager zpracovává všechna data obsažena ve složce input, která je umístěna ve hlavní složce skriptu. Obsažená data jsou vyhodnocována pomocí regevalueu.
 # * Nezáleží tedy na tom, zda jsou všechna naskenovaná čísla umístěna v jednom souboru, nebo jsou rozdělena do více souborů.
 
@@ -46,11 +45,11 @@ class DataManager():
             return_data.append(split[0] + "   " + split[1])
         return return_data 
 
-    def getSnCoords(value: int): # converts given value to the coordinate format of serial nums 
+    def getSnCoords(value: int, divider: int): # converts given value to the coordinate format of serial nums 
 
-        list_count = math.ceil(value/32)
-        column_count = math.ceil(32/12 if ((value%32)/12) == 0 else ((value%32)/12))
-        check_multiple = 32 if value%32 == 0 else value%32
+        list_count = math.ceil(value/divider)
+        column_count = math.ceil(divider/12 if ((value%divider)/12) == 0 else ((value%divider)/12))
+        check_multiple = divider if value%divider == 0 else value%divider
         row_count = 12 if check_multiple%12 == 0 else check_multiple%12
 
         return f"L{list_count} S{column_count} Ř{row_count}"

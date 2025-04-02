@@ -1,22 +1,22 @@
 import json
 import keyboard
 
-from utils import status_tag
+from .utils import status_tag
 
 class SettingsManager:
     def __init__(self, settings_path: str):
         self.SETTINGS_PATH = settings_path
 
-        self.SUPPORTED_SETTINGS = {
+        self.SUPPORTED_SETTINGS = { 
             "unit_count": {
                 "description": "Počet jednotek na jedné paletě (tj. počet SN na jednom listě).",
-                "default_value": 32,
-                "value_type": int
+                "default_value": "32",
+                "value_type": "int"
                 },
             "reference_number": {
                 "description": "Česká reference produktu, jehož SN chcete vkládat.",
                 "default_value": "2",
-                "value_type": str
+                "value_type": "str"
                 }
         }
 
@@ -30,62 +30,66 @@ class SettingsManager:
                     default_value = self.SUPPORTED_SETTINGS[setting]["default_value"]
                     print(f"{status_tag.FAIL} Nastavení pro '{setting}' nebylo nalezeno. Používám přednastavenou hodnotu: {default_value}")
                     settings[setting] = default_value
-            self.SETTINGS = settings
+            self.settings = settings
         
         self.rewriteFile()
 
     def __str__(self):
-        return str(self.SETTINGS)
+        return str(self.settings)
     
     def rewriteFile(self):
         with open(self.SETTINGS_PATH, "w") as file:
-            json.dump(self.SETTINGS, file, indent=True)
+            json.dump(self.settings, file, indent=True)
     
     def showActiveSettings(self):
         print()
         setting_count = 1
-        for setting in self.SETTINGS:
-            print(f"\t[{setting_count}] '{setting}' : {self.SETTINGS[setting]}")
+        for setting in self.settings:
+            print(f"\t[{setting_count}] '{setting}' : {self.settings[setting]}")
             setting_count += 1
+        print()
     
     def writeSetting(self):
         self.showActiveSettings()
         while True:
-            id = input(f"{status_tag.USERPROMPT} Zadejte číslo nastavení, které chcete změnit. (zadejte _cancel pro zrušení) ")
-            if id.lower() == "_cancel":
+            id = input(f"{status_tag.USERPROMPT} Zadejte číslo nastavení, které chcete změnit. (zadejte cancel pro zrušení) ")
+            if id.lower() == "cancel":
                 print(f"{status_tag.INFO} Příkaz k úpravě předčasně ukončen. Nebyly provedeny žádné změny.")
                 return 
             try:
                 if int(id) <= 0:
                     raise IndexError
-                name = list(self.SETTINGS.keys())[int(id)-1]
+                name = list(self.settings.keys())[int(id)-1]
                 break
             except ValueError:
                 print(f"{status_tag.FAIL} Zadali jste neplatnou hodnotu. Zkuste to znovu.")
             except IndexError:
                 print(f"{status_tag.FAIL} Vámi zadané číslo neexistuje.")
+
         new_value = input(f"{status_tag.USERPROMPT} Zadejte novou hodnotu pro nastavení '{name}'. ") # TODO Make func that checks new_value data type
-        if name in self.SETTINGS.keys():
-            self.SETTINGS[name] = new_value
+
+        if name in self.settings.keys():
+            self.settings[name] = new_value
             self.rewriteFile()
             print(f"{status_tag.OK} Nastavení '{name}' změněno na {new_value}")
         else:
             if name in self.SUPPORTED_SETTINGS.keys():
-                self.SETTINGS[name] = new_value
+                self.settings[name] = new_value
                 self.rewriteFile()
                 print(f"{status_tag.OK} Nastavení '{name}' změněno na {new_value} a bylo automaticky aktivováno.")
             else:
                 print(f"{status_tag.FAIL} Nastavení se jménem '{name}' neexistuje.")
-    
+
     def explain(self, info_prompt=True):
         if info_prompt:
             print(f"{status_tag.INFO} Zobrazuji podporovaná nastavení a jejich vysvětlení:\n")
         setting_count = 1
-        for setting in self.SETTINGS.keys():
+        for setting in self.settings.keys():
             print(f"\t[{setting_count}] {setting}: {self.SUPPORTED_SETTINGS[setting]["description"]}")
             setting_count += 1
+        print()
 
-def settings_dialog(manager: SettingsManager):
+def settings_dialog(manager: SettingsManager, onquit=None):
     command_map = {
         "l": manager.explain,
         "e": manager.writeSetting,
@@ -102,10 +106,11 @@ def settings_dialog(manager: SettingsManager):
         if user_input not in command_map:
             print(f"{status_tag.FAIL} Neplatná možnost. Zkuste to znovu.")
         elif user_input == "q":
+            print(f"{status_tag.INFO} Ukončuji změnu nastavení...")
             break
         else:
             command_map[user_input]()
-            print()
+        
 
 if __name__ == "__main__":
     manager = SettingsManager("./src/settings.json")
